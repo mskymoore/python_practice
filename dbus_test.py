@@ -8,12 +8,12 @@ import subprocess as sp
 
 def timer(func):
     def time_wrapper():
-        print('function: {0}'.format(func.__name__))
+        print(f'function: {func.__name__}')
         t1 = time.time()
         result = func()
         t2 = time.time()
         elapsed_time = t2 - t1
-        print("elapsed time: {0:.6f} seconds".format(elapsed_time))
+        print(f"elapsed time: {elapsed_time:.6f} seconds")
         return elapsed_time, result
     return time_wrapper
 
@@ -30,7 +30,7 @@ def dbus_kdeconnect():
         nodes = devices_xml.findall('node')
         deviceIDs = list()
     except dbus.exceptions.DBusException as e:
-        print('dbus.exceptions.DBusException: {0}'.format(e))
+        print(f'dbus.exceptions.DBusException: {e}')
         pass
     for node in nodes:
         deviceIDs.append(node.get('name'))
@@ -50,7 +50,7 @@ def cli_kdeconnect():
     devices = sp.run(['kdeconnect-cli','-l','--id-name-only'],stdout=sp.PIPE)
     return_code = devices.returncode
     if(return_code is not 0):
-        print('Not found kdeconnect-cli, return code: {0}'.format(return_code))
+        print(f'Not found kdeconnect-cli, return code: {return_code}')
     devices = str(devices.stdout).splitlines()
     deviceID_Names = dict()
     for device in devices:
@@ -65,11 +65,11 @@ def cli_kdeconnect():
 
 if __name__ == '__main__':
     elapsed1, output1 = dbus_kdeconnect()
-    print('output: {0}\n'.format(output1))
+    print(f'output: {output1}\n')
     elapsed2, output2 = cli_kdeconnect()
-    print('output: {0}\n'.format(output2)) 
+    print(f'output: {output2}\n') 
     speedup = (elapsed2/elapsed1)
-    print('speedup: {0:.3f}, {1:.0f}%'.format(speedup, speedup*100))
+    print(f'speedup: {speedup:.3f}, {speedup*100:.0f}%')
 
 
 # send a message
